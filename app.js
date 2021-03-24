@@ -11,6 +11,16 @@ app.use(express.urlencoded({
 app.use(cors());
 
 
+// Database connection
+
+const mongoURI = 
+    process.env.NODE_ENV === 'production' 
+    ? process.env.DB_URI 
+    : 'mongodb://localhost:27017/business-data';
+
+
+
+
 // Routers
 app.use('/', (req, res) => {
     res.send('We are on Home page');
