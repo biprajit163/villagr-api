@@ -4,68 +4,62 @@ const router = express.Router();
 const Business = require('./models.js');
 
 
-/*
-    Integrate API with Map functionality
-*/
-
 
 router.get('/', (req, res) => {
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
     Business.find({})
         .then(data => {
             let resData = {
                 results: data.length,
+                count: limit,
                 data: Array
             }
 
-            resData.data = data; 
+            if(page && limit) {
+                resData.data = data.slice(startIndex, endIndex); 
+            } else {
+                resData.data = data;
+            }
+
             res.json(resData);
         })
         .catch(err => console.log(err));
 })
 
 
-
 router.get('/:st', (req, res) => {
-
     const state = req.params.st;
     
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
     Business.find({
         state: state
     })
     .then(data => {
-        resData = {
+        let resData = {
             result: data.length,
+            count: limit,
             data: Array
         }
 
-        resData.data = data;
+        if(page && limit) {
+            resData.data = data.slice(startIndex, endIndex);
+        } else {
+            resData.data = data;
+        }
+
         res.json(resData);
     })
     .catch(err => console.log(err));
 
 });
-
-
-
-// router.get('/filter', (req, res) => {
-//     const page = parseInt(req.query.page);
-//     const limit = parseInt(req.query.limit);
-//     const startIndex = (page - 1) * limit;
-//     const endIndex = page * limit;
-
-//     Business.find({})
-//         .then(data => {
-//             let resData = {
-//                 results: data.length,
-//                 count: limit,
-//                 data: Array
-//             };
-
-//             resData.data = data.slice(startIndex, endIndex);
-//             res.json(resData)
-//         })
-//         .catch(err => console.log(err));
-// });
 
 
 router.get('/filter/critical', (req, res) => {
@@ -78,13 +72,18 @@ router.get('/filter/critical', (req, res) => {
         loan_size_rank_by_state: -1
     })
     .then(data => {
-        resData = {
+        let resData = {
             results: data.length,
             count: limit,
             data: Array
         }
 
-        resData.data = data.slice(startIndex, endIndex);
+        if(page && limit) {
+            resData.data = data.slice(startIndex, endIndex);
+        } else {
+            resData.data = data;
+        }
+
         res.json(resData)
     })
     .catch(err => console.log(err));
@@ -102,13 +101,18 @@ router.get('/filter/uncritical', (req, res) => {
         loan_size_rank_by_state: 1
     })
     .then(data => {
-        resData = {
+        let resData = {
             results: data.length,
             count: limit,
             data: Array
         }
 
-        resData.data = data.slice(startIndex, endIndex);
+        if(page && limit) {
+            resData.data = data.slice(startIndex, endIndex);
+        } else {
+            resData.data = data;
+        }
+
         res.json(resData)
     })
     .catch(err => console.log(err));
@@ -145,7 +149,12 @@ router.get('/filter/type/:tpe', (req, res) => {
             data: Array
         };
 
-        resData.data = data.slice(startIndex, endIndex);
+        if(page && limit) {
+            resData.data = data.slice(startIndex, endIndex);
+        } else {
+            resData.data = data;
+        }
+
         res.json(resData)
     })
     .catch(err => console.log(err));
