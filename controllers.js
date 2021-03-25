@@ -4,6 +4,11 @@ const router = express.Router();
 const Business = require('./models.js');
 
 
+/*
+    Integrate API with Map functionality
+*/
+
+
 router.get('/', (req, res) => {
     Business.find({})
         .then(data => {
@@ -19,25 +24,48 @@ router.get('/', (req, res) => {
 })
 
 
-router.get('/filter', (req, res) => {
-    const page = parseInt(req.query.page);
-    const limit = parseInt(req.query.limit);
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
 
-    Business.find({})
-        .then(data => {
-            let resData = {
-                results: data.length,
-                count: limit,
-                data: Array
-            };
+router.get('/:st', (req, res) => {
 
-            resData.data = data.slice(startIndex, endIndex);
-            res.json(resData)
-        })
-        .catch(err => console.log(err));
+    const state = req.params.st;
+    
+    Business.find({
+        state: state
+    })
+    .then(data => {
+        resData = {
+            result: data.length,
+            data: Array
+        }
+
+        resData.data = data;
+        res.json(resData);
+    })
+    .catch(err => console.log(err));
+
 });
+
+
+
+// router.get('/filter', (req, res) => {
+//     const page = parseInt(req.query.page);
+//     const limit = parseInt(req.query.limit);
+//     const startIndex = (page - 1) * limit;
+//     const endIndex = page * limit;
+
+//     Business.find({})
+//         .then(data => {
+//             let resData = {
+//                 results: data.length,
+//                 count: limit,
+//                 data: Array
+//             };
+
+//             resData.data = data.slice(startIndex, endIndex);
+//             res.json(resData)
+//         })
+//         .catch(err => console.log(err));
+// });
 
 
 router.get('/filter/critical', (req, res) => {
