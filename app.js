@@ -13,11 +13,8 @@ app.use(cors());
 app.use('/api', routers);
 
 app.use('/', (req, res) => {
-    res.send('We are on Home page');
+    res.send('WE ARE A Village!!!');
 });
-
-
-
 
 
 // Listen port
