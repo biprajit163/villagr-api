@@ -22,7 +22,7 @@ This API connects with COVID-19 Economic Injury Disaster Loans dataset, which is
 
 ## Technologies used
 - Express.js, Mongoose, MongoDB 
-> Data Science Technologies go here
+- Python, Pandas, GeoPy
 
 
 ## Framework 
